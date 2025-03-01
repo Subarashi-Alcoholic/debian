@@ -24,7 +24,7 @@
 **Когда использовать:** после выполнения apt-get update, чтобы обновить
 все установленные пакеты до последних версий.
 
-![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image1.png){width="6.496527777777778in"
+![](/media/image1.png){width="6.496527777777778in"
 height="4.1875in"}
 
 ![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image2.png){width="6.496527777777778in"
