@@ -1,0 +1,248 @@
+1.  **apt-get update**
+
+**Что делает:** Эта команда обновляет **список доступных пакетов и их
+версий** из репозиториев, указанных в файлах конфигурации
+(например, /etc/apt/sources.list).
+
+**Как работает:** Она связывается с серверами репозиториев и загружает
+информацию о последних версиях пакетов, но **не устанавливает** их.
+
+**Когда использовать:** рекомендуется выполнять эту команду перед
+установкой или обновлением пакетов, чтобы убедиться, что система
+использует актуальную информацию о доступных пакетах.
+
+**apt-get upgrade**
+
+**Что делает:** Эта команда **устанавливает обновления для всех
+установленных пакетов**, для которых есть новые версии. Она использует
+информацию, полученную после выполнения apt-get update.
+
+**Как работает:** Она загружает и устанавливает новые версии пакетов,
+но **не удаляет** старые пакеты и **не устанавливает** новые пакеты,
+которые требуются для обновления (если они не были установлены ранее).
+
+**Когда использовать:** после выполнения apt-get update, чтобы обновить
+все установленные пакеты до последних версий.
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image1.png){width="6.496527777777778in"
+height="4.1875in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image2.png){width="6.496527777777778in"
+height="4.115277777777778in"}
+
+2.  sudo apt-get install postgresql установка
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image3.png){width="6.496527777777778in"
+height="4.085416666666666in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image4.png){width="6.496527777777778in"
+height="4.1625in"}
+
+sudo apt-get install postgresql-client клиентские пакеты
+
+sudo systemctl status postgresql проверка статуса служб
+
+sudo systemctl start postgresql \# Запустить
+
+sudo systemctl stop postgresql \# Остановить
+
+sudo apt-get remove \--purge postgresql postgresql-\* удаление со всеми
+зависимостями
+
+3.  обычно создается автоматически
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image5.png){width="6.496527777777778in"
+height="4.289583333333334in"}
+
+sudo adduser \--system \--no-create-home \--shell /bin/bash \--group
+postgres создание через команду
+
+-   \--system: Создает системного пользователя (без домашнего каталога).
+
+-   \--no-create-home: Не создает домашний каталог для пользователя.
+
+-   \--shell /bin/bash: Указывает оболочку для пользователя (можно
+    использовать /bin/sh или /bin/false, если не нужен доступ к
+    оболочке).
+
+-   \--group: Создает группу с тем же именем, что и пользователь.
+
+Проверка что пользователь уже существует
+
+id postgres
+
+4.  ![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image6.png){width="6.496527777777778in"
+    height="4.238194444444445in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image7.png){width="6.496527777777778in"
+height="4.3284722222222225in"}
+
+Меняем порт с 5432 на 5433
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image8.png){width="6.496527777777778in"
+height="4.271527777777778in"}![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image9.png){width="6.496527777777778in"
+height="4.25625in"}
+
+Peer и scram-sha-256 меняем на trust (Разрешить доступ без пароля для
+локальных подключений) и md5 (Разрешить доступ по паролю для всех
+пользователей с любого IP-адреса)
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image10.png){width="6.496527777777778in"
+height="4.25625in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image11.png){width="6.496527777777778in"
+height="4.284722222222222in"}
+
+sudo systemctl restart postgresql \# Перезапустить\
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image12.png){width="6.496527777777778in"
+height="4.323611111111111in"}
+
+netstat -- проверяем порт
+
+psql -h localhost -p 5433 -U postgres -- подключаемся
+
+5.  Проверяем статус сервиса
+
+sudo systemctl status postgresql\
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image13.png){width="6.496527777777778in"
+height="4.3in"}
+
+Включить автозапуск
+
+sudo systemctl enable postgresql
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image14.png){width="6.496527777777778in"
+height="4.289583333333334in"}
+
+Проверить включен ли автозапуск\
+sudo systemctl is-enabled postgresql
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image15.png){width="6.496527777777778in"
+height="4.310416666666667in"}
+
+6.  Подключаемся
+
+sudo -u postgres psql
+
+создать пользователя
+
+CREATE USER alpopov WITH PASSWORD \'ваш_пароль\';
+
+Создать бд с владельцем
+
+CREATE DATABASE dbalpopov OWNER alpopov;
+
+Проверить пользователей
+
+\\du
+
+Проверить бдшки
+
+\\l\
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image16.png){width="6.496527777777778in"
+height="3.9034722222222222in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image17.png){width="6.496527777777778in"
+height="2.560416666666667in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image18.png){width="6.496527777777778in"
+height="2.5479166666666666in"}
+
+7.  База данных --- это изолированный контейнер, который содержит все
+    данные и объекты. Каждая база данных в PostgreSQL имеет свои
+    собственные наборы таблиц, схем, пользователей и т.д.
+
+Схема --- это пространство имен внутри базы данных, которое содержит
+объекты (таблицы, функции и т.д.). В одной базе данных может быть
+несколько схем.
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image19.png){width="6.496527777777778in"
+height="2.904861111111111in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image20.png){width="6.496527777777778in"
+height="2.911111111111111in"}
+
+8.  ![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image21.png){width="6.496527777777778in"
+    height="2.8833333333333333in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image22.png){width="6.496527777777778in"
+height="2.86875in"}
+
+9.  \* чтобы PostgreSQL слушал все интерфейсы (или конкретный
+    IP-адрес):![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image23.png){width="6.496527777777778in"
+    height="2.8645833333333335in"} Указывает диапазон IP-адресов, с
+    которых разрешено подключение, тут разрешены все ip адреса, но лучше
+    диапозон 192.168.1.0\\24
+    ![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image24.png){width="6.496527777777778in"
+    height="2.8784722222222223in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image25.png){width="6.496527777777778in"
+height="2.8930555555555557in"}
+
+MD5 --- это криптографическая хеш-функция, которая используется для
+хеширования паролей. В PostgreSQL MD5 применяется для хранения паролей в
+виде хешей и для аутентификации.
+
+SCRAM-SHA-256 --- это современный и безопасный метод аутентификации,
+основанный на хешировании с использованием алгоритма SHA-256. Он был
+добавлен в PostgreSQL начиная с версии 10.
+
+Scram лучше, но через md5 пробивается
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image26.png){width="6.496527777777778in"
+height="3.9430555555555555in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image27.png){width="6.496527777777778in"
+height="6.067361111111111in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image28.png){width="6.496527777777778in"
+height="4.057638888888889in"}
+
+10. ![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image29.png){width="6.496527777777778in"
+    height="2.8618055555555557in"}![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image30.png){width="6.496527777777778in"
+    height="2.8895833333333334in"}
+    ![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image31.png){width="6.496527777777778in"
+    height="2.8854166666666665in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image32.png){width="6.496527777777778in"
+height="2.897222222222222in"}
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image33.png){width="6.496527777777778in"
+height="2.8680555555555554in"}
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image34.png){width="6.496527777777778in"
+height="2.8625in"}
+
+11. 
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image35.png){width="5.86540135608049in"
+height="4.1672484689413825in"}\\du проверяем создана ли
+роль![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image36.png){width="5.93832895888014in"
+height="4.208920603674541in"}\\z limit_table проверить право на
+SELECT![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image37.png){width="5.834146981627296in"
+height="4.135994094488189in"}SELECT -- работает
+
+DELETE -- нет, так и надо
+
+-W принудительный запрос пароля пользователя.
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image38.png){width="6.496527777777778in"
+height="3.1215277777777777in"}
+
+![](vertopal_70f1945dc24c49359b216f54ac583a77/media/image39.png){width="6.496527777777778in"
+height="3.113888888888889in"}права наследовались и у limited есть insert
+теперь
+
+GRANT используется для выдачи прав ролям или пользователям.
+
+GRANT SELECT ON limit_table TO limited_user; - даёт право на чтение
+данных из таблицы.
+
+GRANT INSERT, UPDATE ON limit_table TO limited_user; - даёт право на
+вставку и обновление данных.
+
+GRANT ALL PRIVILEGES ON limit_table TО limited_user; - даёт все права на
+таблицу.
+
+GRANT limited_user TO another_user; - добавляет одну роль в другую,
+позволяя
+
+наследовать права.
